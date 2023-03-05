@@ -1,0 +1,37 @@
+import { FC } from "react";
+import { Fragment } from "react";
+import colors from "github-colors";
+
+interface CircleProps {
+  color: string;
+}
+
+const Circle = ({ color }: CircleProps) => (
+  <span
+    className="w-3 h-3 rounded-full mr-1 border border-gray-300 dark:border-gray-700"
+    style={{ backgroundColor: color }}
+  />
+);
+
+interface LanguageColorProps {
+  language: string;
+}
+
+const LanguageColor: FC<LanguageColorProps> = ({ language }) => {
+  const { color = "#fff" } = colors.get(language) ?? {};
+
+  return (
+    <Fragment>
+      {language && (
+        <span className="inline-flex items-center">
+          <Circle color={color} />
+          <span className="text-gray-700 dark:text-gray-400 text-sm">
+            {language}
+          </span>
+        </span>
+      )}
+    </Fragment>
+  );
+};
+
+export { LanguageColor };
