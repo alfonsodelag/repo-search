@@ -50,7 +50,6 @@ const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
   return (
     <>
       <MetaData searchValue={searchValue} />
-
       <Header />
       <Main>
         <SearchBar value={value} onChange={handleInputChange} />

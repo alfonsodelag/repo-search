@@ -1,47 +1,76 @@
-import useSWRInfinite, { SWRInfiniteConfiguration, SWRInfiniteResponse } from 'swr/infinite';
+import useSWRInfinite from 'swr/infinite';
+import uniqBy from 'lodash.uniqby';
 
-type Data = {
-  name: string;
-  email: string;
-  phone: string;
-}
+import { PER_PAGE } from '../constants';
+import { Data, Repository } from '../types';
 
-type Arguments = {
-  searchValue?: string;
-}
+import { useHasMounted } from './useHasMounted';
+import { fetchWithSearchValue } from '../utils/fetchWithSearchValue';
 
-type Key = [number, string | null];
+const useGithubRepositoryFetcher = (
+  searchValue: string,
+  persistData: Data | null
+): {
+  repositories: Repository[];
+  loading: boolean;
+  loadMore: () => void;
+  error: Error;
+  revalidate: () => void;
+} => {
+  const hasMounted = useHasMounted();
+  
+  const {
+    data,
+    error,
+    size,
+    setSize,
+    mutate,
+  } = useSWRInfinite<Data>(
+    (index, previousPageData) => {
+      if (!searchValue) {
+        return null;
+      }
 
-const getKey: (index: number, previousPageData: Data[] | null) => Key = (index, previousPageData) => {
-  if (previousPageData && !previousPageData.length) return null; // reached the end
-  return [index + 1, 'hello'];
-};
+      if (previousPageData && !previousPageData.items) {
+        return null;
+      }
 
-const fetcher = async (page: number, searchValue: string): Promise<Data[]> => {
-  const res = await fetch(`https://jsonplaceholder.typicode.com/users?_page=${page}&_limit=10`);
-  const data = await res.json();
-  return data;
-};
+      return [index + 1, searchValue];
+    },
+    fetchWithSearchValue,
+    // ! options
+  );
 
-const useData = (): SWRInfiniteResponse<Data[], Error> => {
-  const { data, error, size, setSize } = useSWRInfinite<Data[], Error>(getKey, fetcher);
+  // reduce the data items
+  const repositories =
+    data?.reduce<Repository[]>(
+      (acc, curr) => ('items' in curr ? [...acc, ...curr.items] : acc),
+      []
+    ) ?? [];
 
-  const isLoadingInitialData = !data && !error;
-  const isLoadingMore =
-    isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined');
-  const isEmpty = data?.[0]?.length === 0;
-  const isReachingEnd = isEmpty || (data && data[data.length - 1]?.length < 10);
+  const loading = Boolean(
+    !error &&
+      searchValue &&
+      (!data ||
+        (size > 0 &&
+          typeof data !== 'undefined' &&
+          typeof data[size - 1] === 'undefined'))
+  );
 
   const loadMore = () => {
-    if (!isLoadingMore) setSize(size + 1);
+    if (data && data[size - 1].total_count > size * PER_PAGE) {
+      setSize((prev) => prev + 1);
+    }
   };
 
   return {
-    data: data?.flat(),
+    // The github api sometimes returns duplicate data on different pages
+    repositories: uniqBy(repositories, 'id'),
+    loading,
     error,
-    isLoading: isLoadingMore,
-    isLoadingInitialData,
-    isReachingEnd,
     loadMore,
+    revalidate: mutate,
   };
 };
+
+export { useGithubRepositoryFetcher };
