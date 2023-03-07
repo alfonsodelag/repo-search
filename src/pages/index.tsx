@@ -68,13 +68,10 @@ const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
   };
 
   const handlePreviousPage = () => {
-    console.log("hello");
-
     setCurrentPage(currentPage - 1);
   };
 
   const handleNextPage = () => {
-    console.log("hello");
     setCurrentPage(currentPage + 1);
   };
 

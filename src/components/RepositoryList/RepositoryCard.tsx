@@ -15,8 +15,6 @@ interface RepositoryCardProps {
 }
 
 const RepositoryCard: FC<RepositoryCardProps> = ({ repository }) => {
-  console.log("repository", repository);
-
   return (
     <div className="flex flex-col p-4 mb-4 rounded bg-white shadow-md transition duration-300 ease-in-out transform hover:shadow-lg">
       <div className="flex gap-2">
