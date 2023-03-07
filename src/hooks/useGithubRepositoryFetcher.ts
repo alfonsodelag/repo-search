@@ -19,6 +19,8 @@ const useGithubRepositoryFetcher = (
 } => {
   const hasMounted = useHasMounted();
   
+  console.log("searchVaLUE FROM", searchValue);
+
   const {
     data,
     error,
@@ -37,7 +39,7 @@ const useGithubRepositoryFetcher = (
 
       return [index + 1, searchValue];
     },
-    fetchWithSearchValue,
+    fetchWithSearchValue(searchValue),
     // ! options
   );
 

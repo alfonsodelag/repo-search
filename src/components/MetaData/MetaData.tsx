@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { FC } from "react";
 
-const defaultTitle = "GitHub Repo Searcher";
+const defaultTitle = "The GitHub Repo Searcher";
 const description =
   "A tool for searching GitHub repositories, powered by Next.js.";
 const siteUrl = "http://github-repo-searcher.jigsawye.com/";

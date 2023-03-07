@@ -9,7 +9,7 @@ const Header: FC = () => {
 
         <a
           className="inline-flex ml-auto text-white"
-          href="https://github.com/jigsawye/github-repo-searcher"
+          href="https://github.com/alfonsodelag/repo-search"
           target="_blank"
           rel="noreferrer"
         >

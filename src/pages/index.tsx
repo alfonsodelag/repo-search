@@ -25,9 +25,25 @@ interface HomeProps {
 const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
   const [value, setValue] = useState(persistQueryValue ?? "");
   const [searchValue] = useDebounce(value, 500);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const handlePreviousPage = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  const handleNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
+
+  const start = (currentPage - 1) * 10;
+  const end = currentPage * 10;
 
   const { repositories, loading, loadMore, error, revalidate } =
     useGithubRepositoryFetcher(searchValue, persistData);
+
+  const currentRepositories = repositories.slice(start, end);
 
   // Force reset scroll top after page refresh
   // to prevent trigger loadMore
@@ -55,7 +71,7 @@ const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
         <SearchBar value={value} onChange={handleInputChange} />
         {repositories.length !== 0 && (
           <RepositoryList
-            repositories={repositories}
+            repositories={currentRepositories}
             onLoadMore={handleLoadMore}
           />
         )}
@@ -65,6 +81,14 @@ const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
         {loading && <Skeletons />}
         {/* If the API throw error, render a retry button */}
         {error && <RevalidateButton error={error} onClick={revalidate} />}
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPreviousPage={handlePreviousPage}
+            onNextPage={handleNextPage}
+          />
+        )}
       </Main>
     </>
   );
