@@ -107,13 +107,14 @@ const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
         )}
         {loading && <Skeletons />}
         {/* If the API throw error, render a retry button */}
-        {/* {error && <RevalidateButton error={error} onClick={revalidate} />} */}
-        <Pagination
-          currentPage={currentPage}
-          onNextPage={handleNextPage}
-          totalPages={totalPages}
-          onPreviousPage={handlePreviousPage}
-        />
+        {hasNextPage && (
+          <Pagination
+            currentPage={currentPage}
+            onNextPage={handleNextPage}
+            totalPages={totalPages}
+            onPreviousPage={handlePreviousPage}
+          />
+        )}
         {loading && <Skeletons />}
       </Main>
     </>

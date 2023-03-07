@@ -15,8 +15,8 @@ const Pagination: React.FC<PaginationProps> = ({
 }) => {
   return (
     <nav>
-      <ul className="flex">
-        <li className={`page-item ${currentPage === 1 && "disabled"}`}>
+      <ul className="flex justify-between w-10/12 m-auto">
+        <li>
           <button
             className="bg-black border-2 rounded-md text-white w-20 cursor-pointer"
             onClick={onPreviousPage}
@@ -30,10 +30,10 @@ const Pagination: React.FC<PaginationProps> = ({
             key={page}
             className={`page-item ${currentPage === page && "active"}`}
           >
-            <p>{currentPage}</p>
+            <p>Page: {currentPage}</p>
           </li>
         ))}
-        <li className={`page-item ${currentPage === totalPages && "disabled"}`}>
+        <li>
           <button
             className="bg-black border-2 rounded-md text-white w-20 cursor-pointer"
             onClick={onNextPage}

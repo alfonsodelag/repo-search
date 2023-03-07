@@ -8,6 +8,9 @@ export type Repository = {
   description: string;
   created_at: string;
   updated_at: string;
+  owner: {
+  avatar_url: string;
+  }
   stargazers_count: number;
   language: null | string;
   license: null | {

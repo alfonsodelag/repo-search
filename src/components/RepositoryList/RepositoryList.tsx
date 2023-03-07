@@ -5,21 +5,14 @@ import RepositoryCard from "./RepositoryCard";
 
 interface RepositoryListProps {
   repositories: Repository[];
-  // onLoadMore: () => void;
 }
 
-const RepositoryList: FC<RepositoryListProps> = ({
-  repositories,
-  // onLoadMore,
-}) => {
-  // const { ref } = useInView(onLoadMore);
-
+const RepositoryList: FC<RepositoryListProps> = ({ repositories }) => {
   return (
     <div>
       {repositories.map((repository) => (
         <RepositoryCard key={repository.id} repository={repository} />
       ))}
-      {/* <div ref={ref} /> */}
     </div>
   );
 };
