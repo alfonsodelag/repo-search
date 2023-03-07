@@ -1,5 +1,5 @@
 import { NextPage, GetServerSideProps } from "next";
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler, useState, useEffect } from "react";
 import { useDebounce } from "use-debounce";
 import { GITHUB_SEARCH_REPOSITORY_URL } from "../constants";
 import { Header, Main } from "../components/Layout";
@@ -7,14 +7,11 @@ import RepositoryList from "../components/RepositoryList/RepositoryList";
 import { RevalidateButton } from "../components/RevalidateButton";
 import { SearchBar } from "../components/SearchBar";
 import { Skeletons } from "../components/Skeletons";
-import {
-  useResetScrollTop,
-  useSyncRouteQuery,
-  useGithubRepositoryFetcher,
-} from "../hooks";
-import { Data } from "../types";
+import { useResetScrollTop, useSyncRouteQuery } from "../hooks";
+import { Data, Repository } from "../types";
 import MetaData from "../components/MetaData/MetaData";
 import { EmptyState } from "../components/EmptyState";
+import Pagination from "@/components/Pagination/Pagination";
 
 interface HomeProps {
   // eslint-disable-next-line camelcase
@@ -25,31 +22,44 @@ interface HomeProps {
 const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
   const [value, setValue] = useState(persistQueryValue ?? "");
   const [searchValue] = useDebounce(value, 500);
-  const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  const [repositories, setRepositories] = useState<Repository[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+  const [hasNextPage, setHasNextPage] = useState(false);
 
-  const handlePreviousPage = () => {
-    setCurrentPage(currentPage - 1);
-  };
+  const ITEMS_PER_PAGE = 10; // Change this as per your requirements
 
-  const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
-  };
+  useEffect(() => {
+    if (searchValue) {
+      setLoading(true);
+      setError(null);
+      setRepositories([]);
+      setHasNextPage(false);
 
-  const start = (currentPage - 1) * 10;
-  const end = currentPage * 10;
+      const url = `https://api.github.com/search/repositories?q=${searchValue}&per_page=10&page=${currentPage}`;
 
-  const { repositories, loading, loadMore, error, revalidate } =
-    useGithubRepositoryFetcher(searchValue, persistData);
+      fetch(url)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          setRepositories(data.items);
+          setHasNextPage(data.items.length > 0);
+        })
+        .catch((error) => {
+          setError(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+  }, [searchValue, currentPage]);
 
-  const currentRepositories = repositories.slice(start, end);
-
-  // Force reset scroll top after page refresh
-  // to prevent trigger loadMore
-  useResetScrollTop();
-  // Sync the search value to url query params
-  useSyncRouteQuery(searchValue);
+  const totalPages = Math.ceil(repositories.length / ITEMS_PER_PAGE);
 
   const handleInputChange: ChangeEventHandler<HTMLInputElement> = (event) => {
     if (!loading) {
@@ -57,11 +67,28 @@ const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
     }
   };
 
-  const handleLoadMore = () => {
-    if (!loading && !error) {
-      loadMore();
-    }
+  const handlePreviousPage = () => {
+    console.log("hello");
+
+    setCurrentPage(currentPage - 1);
   };
+
+  const handleNextPage = () => {
+    console.log("hello");
+    setCurrentPage(currentPage + 1);
+  };
+
+  // const handleLoadMore = () => {
+  //   if (!loading && !error && hasNextPage) {
+  //     setCurrentPage(currentPage + 1);
+  //   }
+  // };
+
+  // Force reset scroll top after page refresh
+  // to prevent trigger loadMore
+  useResetScrollTop();
+  // Sync the search value to url query params
+  useSyncRouteQuery(searchValue);
 
   return (
     <>
@@ -71,8 +98,8 @@ const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
         <SearchBar value={value} onChange={handleInputChange} />
         {repositories.length !== 0 && (
           <RepositoryList
-            repositories={currentRepositories}
-            onLoadMore={handleLoadMore}
+            repositories={repositories}
+            // onLoadMore={handleLoadMore}
           />
         )}
         {!loading && !error && searchValue && repositories.length === 0 && (
@@ -80,15 +107,14 @@ const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
         )}
         {loading && <Skeletons />}
         {/* If the API throw error, render a retry button */}
-        {error && <RevalidateButton error={error} onClick={revalidate} />}
-        {totalPages > 1 && (
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPreviousPage={handlePreviousPage}
-            onNextPage={handleNextPage}
-          />
-        )}
+        {/* {error && <RevalidateButton error={error} onClick={revalidate} />} */}
+        <Pagination
+          currentPage={currentPage}
+          onNextPage={handleNextPage}
+          totalPages={totalPages}
+          onPreviousPage={handlePreviousPage}
+        />
+        {loading && <Skeletons />}
       </Main>
     </>
   );
