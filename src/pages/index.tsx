@@ -75,14 +75,6 @@ const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
     setCurrentPage(currentPage + 1);
   };
 
-  // const handleLoadMore = () => {
-  //   if (!loading && !error && hasNextPage) {
-  //     setCurrentPage(currentPage + 1);
-  //   }
-  // };
-
-  // Force reset scroll top after page refresh
-  // to prevent trigger loadMore
   useResetScrollTop();
   // Sync the search value to url query params
   useSyncRouteQuery(searchValue);
@@ -94,16 +86,12 @@ const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
       <Main>
         <SearchBar value={value} onChange={handleInputChange} />
         {repositories.length !== 0 && (
-          <RepositoryList
-            repositories={repositories}
-            // onLoadMore={handleLoadMore}
-          />
+          <RepositoryList repositories={repositories} />
         )}
         {!loading && !error && searchValue && repositories.length === 0 && (
           <EmptyState searchValue={searchValue} />
         )}
         {loading && <Skeletons />}
-        {/* If the API throw error, render a retry button */}
         {hasNextPage && (
           <Pagination
             currentPage={currentPage}
