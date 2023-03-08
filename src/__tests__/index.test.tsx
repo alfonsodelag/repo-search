@@ -1,6 +1,10 @@
 import { render, screen } from "@testing-library/react";
 import Home from "../pages/index";
 
+test("adds 1 + 2 to equal 3", () => {
+  expect(1 + 2).toBe(3);
+});
+
 describe("Home component", () => {
   it("should render with initial state and show error message if no matching repositories", () => {
     render(<Home persistData={null} persistQueryValue={null} />);

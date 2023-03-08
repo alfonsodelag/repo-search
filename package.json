@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest -i index.spec.tsx"
+    "test": "jest"
   },
   "dependencies": {
     "@testing-library/react": "^14.0.0",
