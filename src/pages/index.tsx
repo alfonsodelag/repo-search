@@ -1,3 +1,4 @@
+import React from "react";
 import { NextPage, GetServerSideProps } from "next";
 import { ChangeEventHandler, useState, useEffect } from "react";
 import { useDebounce } from "use-debounce";
@@ -11,7 +12,7 @@ import { useResetScrollTop, useSyncRouteQuery } from "../hooks";
 import { Data, Repository } from "../types";
 import MetaData from "../components/MetaData/MetaData";
 import { EmptyState } from "../components/EmptyState";
-import Pagination from "@/components/Pagination/Pagination";
+import { Pagination } from "../components/Pagination";
 
 interface HomeProps {
   persistData: Data | null;
@@ -74,9 +75,9 @@ const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
     setCurrentPage((prevPage) => prevPage + 1);
   };
 
-  useResetScrollTop();
+  // useResetScrollTop();
   // Sync the search value to url query params
-  useSyncRouteQuery(searchValue);
+  // useSyncRouteQuery(searchValue);
 
   return (
     <>
