@@ -14,7 +14,6 @@ import { EmptyState } from "../components/EmptyState";
 import Pagination from "@/components/Pagination/Pagination";
 
 interface HomeProps {
-  // eslint-disable-next-line camelcase
   persistData: Data | null;
   persistQueryValue: string | null;
 }
@@ -68,11 +67,11 @@ const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
   };
 
   const handlePreviousPage = () => {
-    setCurrentPage(currentPage - 1);
+    setCurrentPage((prevPage) => prevPage - 1);
   };
 
   const handleNextPage = () => {
-    setCurrentPage(currentPage + 1);
+    setCurrentPage((prevPage) => prevPage + 1);
   };
 
   useResetScrollTop();

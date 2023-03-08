@@ -1,12 +1,13 @@
 module.exports = {
-  roots: ["<rootDir>/src"],
-  moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
-  testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+  collectCoverageFrom: [
+    "<rootDir>/src/**/*.{ts,tsx}",
+    "!**/*.d.ts",
+    "!**/node_modules/**",
+  ],
+  setupFilesAfterEnv: ["<rootDir>/test/jest.setup.js"],
+  testPathIgnorePatterns: ["/node_modules/", "/.next/"],
   transform: {
-    "^.+\\.tsx?$": "babel-jest",
+    "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
   },
-  moduleNameMapper: {
-    "\\.(css|less)$": "<rootDir>/__mocks__/styleMock.js",
-  },
-  setupFilesAfterEnv: ["<rootDir>/test/setupTests.ts"],
+  transformIgnorePatterns: ["/node_modules/"],
 };

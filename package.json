@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest -i index.spec.tsx"
   },
   "dependencies": {
     "@testing-library/react": "^14.0.0",
@@ -39,6 +40,7 @@
     "@types/lodash.uniqby": "^4.7.7",
     "autoprefixer": "^10.4.13",
     "babel-jest": "^29.5.0",
+    "babel-plugin-tailwind": "^0.1.10",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
     "postcss": "^8.4.21",
