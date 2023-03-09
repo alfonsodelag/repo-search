@@ -36,7 +36,6 @@ const RepositoryCard: FC<RepositoryCardProps> = ({ repository }) => {
         >
           {repository.full_name} <GoLinkExternal className="ml-2" />
         </a>
-        {console.log('repository', repository)}
       </div>
       <div className="text-base my-2">{repository.description}</div>
 
@@ -54,7 +53,6 @@ const RepositoryCard: FC<RepositoryCardProps> = ({ repository }) => {
         {repository.language && (
           <div className="flex items-center mr-4">
             <LanguageColor language={repository.language} />
-            {/* <span className="ml-1">{repository.language}</span> */}
           </div>
         )}
 
