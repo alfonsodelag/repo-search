@@ -36,6 +36,7 @@ const RepositoryCard: FC<RepositoryCardProps> = ({ repository }) => {
         >
           {repository.full_name} <GoLinkExternal className="ml-2" />
         </a>
+        {console.log('repository', repository)}
       </div>
       <div className="text-base my-2">{repository.description}</div>
 
@@ -62,6 +63,33 @@ const RepositoryCard: FC<RepositoryCardProps> = ({ repository }) => {
             <span>{repository.license.name}</span>
           </div>
         )}
+
+        <div className="flex flex-col">
+          {repository.created_at && (
+            <div className="flex items-center mr-4">
+              <span>
+                Created at:{' '}
+                {new Date(repository.created_at).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}
+              </span>
+            </div>
+          )}
+          {repository.updated_at && (
+            <div className="flex items-center mr-4">
+              <span>
+                Updated at:{' '}
+                {new Date(repository.updated_at).toLocaleDateString('en-US', {
+                  month: 'short',
+                  day: 'numeric',
+                  year: 'numeric',
+                })}
+              </span>
+            </div>
+          )}
+        </div>
       </div>
     </article>
   );
