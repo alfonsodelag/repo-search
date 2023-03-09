@@ -1,13 +1,13 @@
-import { FC } from "react";
-import Image from "next/image";
-import { GoStar, GoRepoForked, GoLinkExternal } from "react-icons/go";
+import { FC } from 'react';
+import Image from 'next/image';
+import { GoStar, GoRepoForked, GoLinkExternal } from 'react-icons/go';
 
-import { Repository } from "../../types";
+import { Repository } from '../../types';
 
-import { LanguageColor } from "./LanguageIcon";
+import { LanguageColor } from './LanguageIcon';
 
-const numberFormatter = new Intl.NumberFormat("en", {
-  notation: "compact",
+const numberFormatter = new Intl.NumberFormat('en', {
+  notation: 'compact',
 });
 
 interface RepositoryCardProps {

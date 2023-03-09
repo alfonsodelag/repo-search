@@ -1,7 +1,6 @@
-import { FC } from "react";
-import { useInView } from "../../hooks";
-import { Repository } from "../../types";
-import RepositoryCard from "./RepositoryCard";
+import { FC } from 'react';
+import { Repository } from '../../types';
+import RepositoryCard from './RepositoryCard';
 
 interface RepositoryListProps {
   repositories: Repository[];

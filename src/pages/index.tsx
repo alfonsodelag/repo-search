@@ -1,26 +1,24 @@
-import React from "react";
-import { NextPage, GetServerSideProps } from "next";
-import { ChangeEventHandler, useState, useEffect } from "react";
-import { useDebounce } from "use-debounce";
-import { GITHUB_SEARCH_REPOSITORY_URL } from "../constants";
-import { Header, Main } from "../components/Layout";
-import RepositoryList from "../components/RepositoryList/RepositoryList";
-import { RevalidateButton } from "../components/RevalidateButton";
-import { SearchBar } from "../components/SearchBar";
-import { Skeletons } from "../components/Skeletons";
-import { useResetScrollTop, useSyncRouteQuery } from "../hooks";
-import { Data, Repository } from "../types";
-import MetaData from "../components/MetaData/MetaData";
-import { EmptyState } from "../components/EmptyState";
-import { Pagination } from "../components/Pagination";
+import React, { ChangeEventHandler, useState, useEffect } from 'react';
+import { NextPage, GetServerSideProps } from 'next';
+
+import { useDebounce } from 'use-debounce';
+import { GITHUB_SEARCH_REPOSITORY_URL } from '../constants';
+import Header from '../components/Layout/Header';
+import Main from '../components/Layout/Main';
+import RepositoryList from '../components/RepositoryList/RepositoryList';
+import SearchBar from '../components/SearchBar/SearchBar';
+import Skeletons from '../components/Skeletons/Skeletons';
+import { Data, Repository } from '../types';
+import MetaData from '../components/MetaData/MetaData';
+import EmptyState from '../components/EmptyState/EmptyState';
+import Pagination from '../components/Pagination/Pagination';
 
 interface HomeProps {
-  persistData: Data | null;
   persistQueryValue: string | null;
 }
 
-const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
-  const [value, setValue] = useState(persistQueryValue ?? "");
+const Home: NextPage<HomeProps> = ({ persistQueryValue }) => {
+  const [value, setValue] = useState(persistQueryValue ?? '');
   const [searchValue] = useDebounce(value, 500);
   const [currentPage, setCurrentPage] = useState(1);
   const [repositories, setRepositories] = useState<Repository[]>([]);
@@ -42,7 +40,7 @@ const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
       fetch(url)
         .then((response) => {
           if (!response.ok) {
-            throw new Error("Network response was not ok");
+            throw new Error('Network response was not ok');
           }
           return response.json();
         })
@@ -50,6 +48,7 @@ const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
           setRepositories(data.items);
           setHasNextPage(data.items.length > 0);
         })
+        // eslint-disable-next-line
         .catch((error) => {
           setError(error);
         })
@@ -74,10 +73,6 @@ const Home: NextPage<HomeProps> = ({ persistData, persistQueryValue }) => {
   const handleNextPage = () => {
     setCurrentPage((prevPage) => prevPage + 1);
   };
-
-  // useResetScrollTop();
-  // Sync the search value to url query params
-  // useSyncRouteQuery(searchValue);
 
   return (
     <>

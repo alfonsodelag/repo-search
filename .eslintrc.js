@@ -20,11 +20,15 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/jsx-filename-extension': 'off',
     'react/prop-types': 'off',
-
+    'react/function-component-definition': 'off',
+    'react/no-unescaped-entities': 'off',
+    'no-unused-vars': ['error', { argsIgnorePattern: '^(_|language$)' }],
+    'react/jsx-no-useless-fragment': ['error', { allowExpressions: true }],
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': ['error'],
+    '@typescript-eslint/no-var-requires': 'error',
     'arrow-body-style': 'off',
-
-    'prettier/prettier': 'error',
-
+    'prettier/prettier': ['error', { endOfLine: 'auto' }],
     'import/prefer-default-export': 'off',
     'import/extensions': [
       'error',
@@ -35,6 +39,8 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'no-use-before-define': 'off',
+    '@typescript-eslint/no-use-before-define': ['error'],
   },
   settings: {
     'import/parser': {

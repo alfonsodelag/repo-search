@@ -1,11 +1,10 @@
-import React from "react";
-import Head from "next/head";
-import { FC } from "react";
+import React, { FC } from 'react';
+import Head from 'next/head';
 
-const defaultTitle = "The GitHub Repo Searcher";
+const defaultTitle = 'The GitHub Repo Searcher';
 const description =
-  "A tool for searching GitHub repositories, powered by Next.js.";
-const siteUrl = "https://github.com/alfonsodelag/repo-search";
+  'A tool for searching GitHub repositories, powered by Next.js.';
+const siteUrl = 'https://github.com/alfonsodelag/repo-search';
 
 interface MetaDataProps {
   searchValue: string;

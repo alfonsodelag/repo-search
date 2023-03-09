@@ -1,7 +1,7 @@
-import { FC } from "react";
-import ContentLoader from "react-content-loader";
+import { FC } from 'react';
+import ContentLoader from 'react-content-loader';
 
-export const Skeleton: FC = () => {
+const Skeleton: FC = () => {
   return (
     <div className="flex flex-col flex-auto p-12 mb-16 rounded-md bg-white shadow-md transition duration-300 ease-in-out hover:shadow-lg">
       <ContentLoader height={90}>
@@ -25,4 +25,4 @@ const Skeletons: FC = () => {
   );
 };
 
-export { Skeletons };
+export default Skeletons;
