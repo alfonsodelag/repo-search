@@ -3,7 +3,7 @@ import { BsArrow90DegUp } from "react-icons/bs";
 
 import { useHasMounted } from "../../hooks/useHasMounted";
 
-import { InputPrefix, InputPrefixWrapper } from "./InputPrefix";
+import { InputPrefix } from "./InputPrefix";
 
 const SearchBarWrapper = ({ value, onChange }: SearchBarProps) => (
   <label className="flex flex-row-reverse my-6">
@@ -14,6 +14,7 @@ const SearchBarWrapper = ({ value, onChange }: SearchBarProps) => (
 
 const Input = ({ value, onChange }: SearchBarProps) => (
   <input
+    role="searchbox"
     type="text"
     placeholder="Search Repository..."
     value={value}

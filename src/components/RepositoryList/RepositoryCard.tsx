@@ -16,7 +16,10 @@ interface RepositoryCardProps {
 
 const RepositoryCard: FC<RepositoryCardProps> = ({ repository }) => {
   return (
-    <div className="flex flex-col p-4 mb-4 rounded bg-white shadow-md transition duration-300 ease-in-out transform hover:shadow-lg">
+    <article
+      data-testid="repository-name"
+      className="flex flex-col p-4 mb-4 rounded bg-white shadow-md transition duration-300 ease-in-out transform hover:shadow-lg"
+    >
       <div className="flex gap-2">
         <Image
           src={repository.owner.avatar_url}
@@ -60,7 +63,7 @@ const RepositoryCard: FC<RepositoryCardProps> = ({ repository }) => {
           </div>
         )}
       </div>
-    </div>
+    </article>
   );
 };
 
